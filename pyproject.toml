@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "QA-Bot"
+version = "0.1.0"
+description = "A project using FastAPI and requests"
+authors = ["uowol <alllhvhla@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.5"
+requests = "^2.32.3"
+uvicorn = "0.32.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
