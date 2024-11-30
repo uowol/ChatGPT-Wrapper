@@ -6,3 +6,5 @@
 # docker ps -a
 # docker start poetry-pyenv-container
 # docker exec -it poetry-pyenv-container /bin/bash
+
+# poetry run uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload

@@ -42,7 +42,3 @@ RUN poetry env use $(pyenv which python)
 
 # Step 10: Install dependencies using Poetry
 RUN poetry install
-
-# Step 11: Default command to run the application
-EXPOSE 8000
-CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
