@@ -10,7 +10,7 @@
     - slack 봇 채널 초대 `/invite @bot-name`
     - slack Event Subscription Enable해주고, Subscribe to bot events에 message.channels 추가
     - ngrok으로 퍼블릭 URL 만들어 slack에 입력하기
-- [ ] 셀레니움을 활용해 chatgpt.com 접속 및 채팅하기
+- [x] (Prototype) 셀레니움을 활용해 chatgpt.com 접속 및 채팅하기
 - [ ] FastAPI 컨테이너 생성 및 실행을 지시하는 윈도우/리눅스 스크립트 작성
 
 #### 배경
