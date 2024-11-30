@@ -4,10 +4,14 @@
 - [x] 요구하는 파이썬 환경을 저장하는 docker 이미지 만들기
     - [x] pyenv를 활용한 파이썬 환경 생성
     - [x] docker 이미지 생성
-- [ ] 컨테이너 생성 및 실행을 지시하는 윈도우/리눅스 스크립트 작성
-    - [ ] 생성한 docker 이미지로 컨테이너 실행
-    - [ ] 윈도우/리눅스 스크립트 작성
-- [ ] Next step, FastAPI를 활용한 웹 서버 배포까지 자동화
+- [x] (Prototype) slack bot 만들기
+    - slack 봇 생성
+    - slack 봇 워크스페이스 초대
+    - slack 봇 채널 초대 `/invite @bot-name`
+    - slack Event Subscription Enable해주고, Subscribe to bot events에 message.channels 추가
+    - ngrok으로 퍼블릭 URL 만들어 slack에 입력하기
+- [ ] 셀레니움을 활용해 chatgpt.com 접속 및 채팅하기
+- [ ] FastAPI 컨테이너 생성 및 실행을 지시하는 윈도우/리눅스 스크립트 작성
 
 #### 배경
 요즘 GPT가 일을 잘하긴 함. 어지간한건 PDF 형태로 그냥 넣어서 요약 및 정리할 수 있음.
