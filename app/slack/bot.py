@@ -7,7 +7,7 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from app.selenium.scraper import ChatGPTScraper
 
-SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
+SLACK_BOT_TOKEN = "YOUR_BOT_TOKEN"
 
 client = WebClient(token=SLACK_BOT_TOKEN)
 
