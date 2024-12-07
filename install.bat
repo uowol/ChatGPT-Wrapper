@@ -14,12 +14,12 @@
 
 @REM :: Step 3: Install Python 3.10.11 and set it as global
 @REM echo Installing Python 3.10.11 with pyenv...
-@REM %PYENV_ROOT%\bin\pyenv install 3.10.11
+@REM pyenv install 3.10.11
 @REM if %ERRORLEVEL% NEQ 0 (
 @REM     echo Error installing Python 3.10.11. Exiting.
 @REM     exit /b %ERRORLEVEL%
 @REM )
-@REM %PYENV_ROOT%\bin\pyenv global 3.10.11
+@REM pyenv global 3.10.11
 
 :: Step 4: Install Poetry
 echo Installing Poetry...

@@ -22,15 +22,17 @@
       - OAuth & Permissions 들어가서 Scopes에 `channels:history`, `chat:write`, `chat:write.public` 추가
       - OAuth Tokens 만든 후 `Bot User OAuth Token` 복사 및 `app/slack/bot.py`의 `SLACK_BOT_TOKEN`에 붙여넣기
     - 워크스페이스에서 원하는 채널에 들어가 `/invite @bot-name` 명령어를 통해 봇 초대
-3. Slack 봇 Handling 및 chatgpt 스크래핑을 담당하는 로컬 웹서버 배포
+3. (중요!) chatgpt 페이지에 들어가 로그인 한 번 진행하기
+4. Slack 봇 Handling 및 chatgpt 스크래핑을 담당하는 로컬 웹서버 배포
     - `poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000`
-4. ngrok을 활용해 로컬 서버를 공개 서버로 배포
+5. ngrok을 활용해 로컬 서버를 공개 서버로 배포
     - ngrok 설치([링크](https://download.ngrok.com/windows))
+    - 로컬 서버 -> 공개 서버, `ngrok http http://localhost.8000`
     - 공개 서버 주소 복사
-5. Slack 채팅 이벤트 핸들링
+6. Slack 채팅 이벤트 핸들링
     - Slack 봇이 있는 채널에서 발생하는 이벤트를 감지하기 위해 앞서 만들어준 봇 페이지에 접속하여([관련 링크](https://api.slack.com/apps))에서 Event Subscription 페이지로 이동
     - Enable Events 토글 on 해주고 Request URL에 앞서 복사한 공개서버 주소 붙여넣기
       - `{공개서버주소}/slack/events`
       - Subscribe to bot events를 눌러 `message.channels` 이벤트 추가
-6. 완료🚀 이제 slack 봇이 들어있는 채팅창에서 채팅을 시작하세요.
+7. 🚀 완료, 이제 slack 봇이 들어있는 채팅창에서 채팅을 시작하세요.
 
