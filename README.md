@@ -15,11 +15,11 @@
 
 ## Example
 - 쓰레드로 채팅을 관리하는 예제, 각 채팅이 독립적으로 동작한다.
-![Alt text](image-2.png)
+![Alt text](docs/image-2.png)
   - 첫 번째 쓰레드
-  ![Alt text](image.png)
+  ![Alt text](docs/image.png)
   - 두 번째 쓰레드
-  ![Alt text](image-1.png)
+  ![Alt text](docs/image-1.png)
 
 
 ## Inference
