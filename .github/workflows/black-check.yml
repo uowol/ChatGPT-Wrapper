@@ -1,0 +1,29 @@
+name: Black Code Formatter Check
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 실행
+
+jobs:
+  black-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # 원하는 Python 버전
+
+      # 3. Install Black
+      - name: Install dependencies
+        run: pip install black
+
+      # 4. Run Black in check mode
+      - name: Run Black (Check Mode)
+        run: black --check .
