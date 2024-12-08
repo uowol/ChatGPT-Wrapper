@@ -13,6 +13,15 @@
 - chatgpt 등 대부분이 유료서비스이므로 사용중인 서비스에 대해 scrapper를 붙여 동작하게끔
   - 단, 그걸 위해 API를 유료로 또 제공하고 있으므로 해당 프로젝트는 반드시 학술적인 용도로만 사용할 것
 
+## Example
+- 쓰레드로 채팅을 관리하는 예제, 각 채팅이 독립적으로 동작한다.
+![Alt text](image-2.png)
+  - 첫 번째 쓰레드
+  ![Alt text](image.png)
+  - 두 번째 쓰레드
+  ![Alt text](image-1.png)
+
+
 ## Inference
 #### 1. `install.bat` 를 실행하여 poetry 설치 및 필요한 패키지 설치
   - `python==3.10.11`을 권장

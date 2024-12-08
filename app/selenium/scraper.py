@@ -12,9 +12,6 @@ from typing import List
 import os
 import time
 
-WINDOW_CHROME_SUBPROCESS_PATH = r'C:\Program Files\Google\Chrome\Application\chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\chromeCookie"'
-SUBPROCESS_PORT = 9222
-
 
 class ChatGPTScraper:
     def __init__(self, subprocess_path: str, subprocess_port: int):
@@ -24,7 +21,7 @@ class ChatGPTScraper:
             "debuggerAddress", f"127.0.0.1:{subprocess_port}"
         )
         self.driver = self._initialize_driver(subprocess_path)
-        self.driver.get("https://www.chatgpt.com")
+        self.driver.get(self.url)
 
     def _initialize_driver(self, subprocess_path):
         self.open_subprocess(subprocess_path)
@@ -34,10 +31,18 @@ class ChatGPTScraper:
 
     def open_subprocess(self, subprocess_path: str):
         subprocess.Popen(subprocess_path)
+        
+    def close_subprocess(self):
+        self.driver.quit()
+        subprocess.Popen("taskkill /f /im chrome.exe")  # TODO: control exceptions
 
-    def search_chatgpt(self, query: str) -> List[str]:
-        results = []
+    def search_chatgpt(self, url:str, query: str) -> List[str]:
+        url = self.url if url is None else url
+        results = None
         try:
+            # if page not equal with current page, change page
+            if self.driver.current_url != url:
+                self.driver.get(url)
 
             search_box = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "p.placeholder"))
@@ -54,18 +59,17 @@ class ChatGPTScraper:
                 "div > div > div > div > article > div > div",
             )
             last_response = responses[-1]
-            results.append(last_response.text)
-
+            results = last_response.text
         except Exception as e:
             print(f"Error during ChatGPT search: {e}")
-        # finally:  # TODO: 프로그램 종료 시 브라우저 종료
-        #     self.driver.quit()
-        #     subprocess.Popen("taskkill /f /im chrome.exe")  # TODO: control exceptions
 
-        return results[0]
+        return results, self.driver.current_url
 
 
 if __name__ == "__main__":
+    WINDOW_CHROME_SUBPROCESS_PATH = r'C:\Program Files\Google\Chrome\Application\chrome.exe --remote-debugging-port=9222 --user-data-dir="C:\chromeCookie"'
+    SUBPROCESS_PORT = 9222
+
     # Example usage
     CHROME_SUBPROCESS_PATH = os.getenv(
         "CHROME_SUBPROCESS_PATH", WINDOW_CHROME_SUBPROCESS_PATH
