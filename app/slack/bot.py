@@ -12,6 +12,7 @@ SLACK_BOT_TOKEN = "YOUR_BOT_TOKEN"
 
 client = WebClient(token=SLACK_BOT_TOKEN)
 
+
 def slack_event_handler(event_data: dict, scraper: ChatGPTScraper, database: dict):
     event = event_data.get("event", {})
 
@@ -19,8 +20,11 @@ def slack_event_handler(event_data: dict, scraper: ChatGPTScraper, database: dic
         channel_id = event.get("channel")
         ts = event.get("ts")
         thread_ts = event.get("thread_ts", ts)
-        info_message = f"no matching thread: {database.get(thread_ts, None)}" \
-            if thread_ts != ts else f"matching thread: {database.get(thread_ts, None)}"
+        info_message = (
+            f"no matching thread: {database.get(thread_ts, None)}"
+            if thread_ts != ts
+            else f"matching thread: {database.get(thread_ts, None)}"
+        )
         print(f"# [INFO] Received message: {info_message}")
 
         # current_time = convert_to_kst(ts) # debug
@@ -29,9 +33,7 @@ def slack_event_handler(event_data: dict, scraper: ChatGPTScraper, database: dic
         response_text, current_url = scraper.search_chatgpt(current_url, current_text)
 
         update_database(database, thread_ts, current_url)
-        send_thread_message(
-            channel_id, thread_ts, f"{response_text}"
-        )
+        send_thread_message(channel_id, thread_ts, f"{response_text}")
 
 
 def send_thread_message(channel_id: str, thread_ts: str, text: str):
@@ -56,12 +58,14 @@ def read_database():
     print("# [INFO] Database loaded")
     return database
 
+
 def update_database(database, key, value):
     if key in database and database[key] == value:
         return
     database[key] = value
     print(f"# [INFO] Updated database: {key}={value}")
     write_database(database)
+
 
 def write_database(database):
     print("# [INFO] Writing database")

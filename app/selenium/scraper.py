@@ -31,12 +31,12 @@ class ChatGPTScraper:
 
     def open_subprocess(self, subprocess_path: str):
         subprocess.Popen(subprocess_path)
-        
+
     def close_subprocess(self):
         self.driver.quit()
         subprocess.Popen("taskkill /f /im chrome.exe")  # TODO: control exceptions
 
-    def search_chatgpt(self, url:str, query: str) -> List[str]:
+    def search_chatgpt(self, url: str, query: str) -> List[str]:
         url = self.url if url is None else url
         results = None
         try:
