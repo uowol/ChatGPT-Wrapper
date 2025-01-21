@@ -13,6 +13,10 @@ import os
 import time
 
 
+# Need to update when new models are added
+CHATGPT_MODELS = ["gpt-4o", "o1", "o1-mini"]
+
+
 class ChatGPTScraper:
     def __init__(self, subprocess_path: str, subprocess_port: int):
         self.url = "https://chat.openai.com/"
@@ -37,9 +41,12 @@ class ChatGPTScraper:
         subprocess.Popen("taskkill /f /im chrome.exe")  # TODO: control exceptions
 
     def search_chatgpt(self, url: str, query: str) -> List[str]:
+        wait = WebDriverWait(self.driver, 240)
         url = self.url if url is None else url
+        model = url.split("=")[-1]
+        assert model in CHATGPT_MODELS, f"Invalid model: {model}"
+
         results = None
-        wait = WebDriverWait(self.driver, 10)
         try:
             # if page not equal with current page, change page
             if self.driver.current_url != url:
@@ -91,4 +98,5 @@ if __name__ == "__main__":
     scraper = ChatGPTScraper(
         subprocess_path=CHROME_SUBPROCESS_PATH, subprocess_port=SUBPROCESS_PORT
     )
-    print(scraper.search_chatgpt(None, "What is the capital of France?"))
+    scraper.change_model(None, "gpt-4o")
+    # print(scraper.search_chatgpt(None, "What is the capital of France?"))

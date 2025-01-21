@@ -53,7 +53,7 @@ class Response(BaseModel):
 @app.post("/v1/chat/completions")
 async def chat_completions(request: Request):
     data = await request.json()
-    model = data.get("model")  # TODO
+    model = data.get("model")
     messages = data.get("messages")
     text = ""
 
@@ -66,9 +66,8 @@ async def chat_completions(request: Request):
             text += f"{content} "
 
     try:
-        response_text, current_url = scraper.search_chatgpt(
-            "https://chatgpt.com/c/678f8187-43dc-8012-abbd-eb2e37f3dfb5", text
-        )
+        url = scraper.url + f"?model={model}"
+        response_text, current_url = scraper.search_chatgpt(url, text)
     except Exception as e:
         response_text = f"Error during ChatGPT completions: {e}"
         current_url = None
