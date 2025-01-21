@@ -1,26 +1,48 @@
-# Slack-QA-Bot
-- now version : 1.0
-- v1 : text-only, window-only, no-api
+# ChatGPT-Wrapper
+- now version : 1.1
+- v1.1 : api, model-change
+- v1 : text-only, window-only, slack-bot, no-api, gpt-4o-only
 
 ## Background
-- 업무나 업무 외적으로도 GPT를 사용하는 비중이 커졌으나, 따로 관리하는 방법이 없고 날짜별로 정리만 해주기 때문에 이전에 질문했던 내용을 찾기가 쉽지 않음.
-- 그러다 Slack이나 디스코드의 채널을 떠올렸는데, 관련 업무에 대한 질문을 해당 채널에서 관리할 수 있다면 조금 더 접근이 용이해지지 않을까 함.
+- 업무나 업무 외적으로도 GPT를 사용하는 비중이 커졌으나, 따로 관리하는 방법이 없고 날짜별로 정리만 해주기 때문에 이전에 질문했던 내용을 찾기가 쉽지 않습니다.
+- 그러다 Slack이나 디스코드의 채널을 떠올렸는데, 관련 업무에 대한 질문을 해당 채널에서 관리할 수 있다면 조금 더 접근이 용이해지지 않을까 했습니다.
 
 ## Functions
-- slack이나 discord 봇 형태로 동작
-- 채널에 질문이 들어오면 해당 질문에 대한 쓰레드로 gpt가 생성한 답변을 반환
-- 해당 쓰레드에서 질문을 이어나갈 수 있음
-- chatgpt 등 대부분이 유료서비스이므로 사용중인 서비스에 대해 scrapper를 붙여 동작하게끔
-  - 단, 그걸 위해 API를 유료로 또 제공하고 있으므로 해당 프로젝트는 반드시 학술적인 용도로만 사용할 것
+- slack 봇 형태로 동작합니다.
+- 채널에 질문이 들어오면 해당 질문에 대한 쓰레드로 gpt가 생성한 답변을 반환합니다.
+- 해당 쓰레드에서 질문을 이어나갈 수 있습니다.
+- API 대신 구독중인 본인의 chatgpt 계정을 활용하고 있으므로 해당 프로젝트는 반드시 비금리적으로 사용해야 합니다.
+- chatgpt [docs](https://platform.openai.com/docs/api-reference/chat/create)에 나와있는 것과 동일하게 `v1/chat/completions` endpoint를 본인의 것에 붙여 api를 사용할 수 있습니다. (분산처리 구현 X)
 
 ## Example
-- 쓰레드로 채팅을 관리하는 예제, 각 채팅이 독립적으로 동작한다.
-![Alt text](docs/image-2.png)
+- 쓰레드로 채팅을 관리하는 예제, 각 채팅이 독립적으로 동작합니다.
+  ![Alt text](docs/image-2.png)
   - 첫 번째 쓰레드
-  ![Alt text](docs/image.png)
+    ![Alt text](docs/image.png)
   - 두 번째 쓰레드
-  ![Alt text](docs/image-1.png)
+    ![Alt text](docs/image-1.png)
 
+- API를 활용해 답변을 생성하는 예제
+  - CMD
+    ```
+    curl https://{address}/v1/chat/completions \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-4o",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful assistant. 한국어로 답해줘."
+        },
+        {
+          "role": "user",
+          "content": "내가 제일 좋아하는 과일이 뭘까?"
+        }
+      ]
+    }'
+    ```
+  - 결과
+    ![image](https://github.com/user-attachments/assets/3c44a491-c8b7-4186-b4a9-65cdf00612db)
 
 ## Inference
 #### 1. `install.bat` 를 실행하여 poetry 설치 및 필요한 패키지 설치
@@ -44,4 +66,23 @@
     - `{공개서버주소}/slack/events`
     - Subscribe to bot events를 눌러 `message.channels` 이벤트 추가
 #### 6. 🚀 완료, 이제 slack 봇이 들어있는 채팅창에서 채팅을 시작하세요.
+
+#### Extra. API 사용하기
+```
+curl https://{address}/v1/chat/completions \
+-H "Content-Type: application/json" \
+-d '{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "system",
+      "content": "{system 프롬프트를 입력합니다.}"
+    },
+    {
+      "role": "user",
+      "content": "{질문을 구성합니다.}"
+    }
+  ]
+}'
+```
 
