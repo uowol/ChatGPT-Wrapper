@@ -1,6 +1,9 @@
 import os
-import uvicorn
+import json
+import time
 from fastapi import FastAPI, Request
+from pydantic import BaseModel
+
 from app.slack.bot import slack_event_handler, read_database
 from app.selenium.scraper import ChatGPTScraper
 
@@ -11,32 +14,67 @@ CHROME_SUBPROCESS_PATH = os.getenv(
 )
 SUBPROCESS_PORT = os.getenv("SUBPROCESS_PORT", 9222)
 
+
 app = FastAPI()
-database = (
-    read_database()
-)  # bot.py의 read_database() 함수를 호출하여 filesystem에서 데이터베이스를 읽음
-scraper = ChatGPTScraper(  # run scraper(selenium) with subprocess
+database = read_database()  # load database from filesystem(AS-IS: local, TO-BE: s3)
+scraper = ChatGPTScraper(
     subprocess_path=CHROME_SUBPROCESS_PATH, subprocess_port=SUBPROCESS_PORT
-)
+)  # run scraper(selenium) with subprocess
 
 
+# Control slack events
 @app.post("/slack/events")
 async def slack_events(request: Request):
     headers = request.headers
     if headers.get("X-Slack-Retry-Num"):
-        return {
-            "status": "ok"
-        }  # 재시도 케이스에 대해 ok 답변을 보내지 않으면 계속해서 같은 이벤트를 받음
+        return {"status": "ok"}
 
     event_data = await request.json()
-
-    if (
-        "challenge" in event_data
-    ):  # Slack sends a challenge event when the server is first connected
+    if "challenge" in event_data:
         return {"challenge": event_data["challenge"]}
 
     response = slack_event_handler(event_data, scraper, database)
+    return {"status": "ok"} if response else {"status": "error"}
 
-    return {
-        "status": "ok"
-    }  # slack에게 응답을 보내지 않으면 계속해서 같은 이벤트를 받음
+
+# Health check
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
+class Response(BaseModel):
+    response: str
+    url: str
+    details: dict  # endpoint, status, model
+
+
+# API reference
+@app.post("/v1/chat/completions")
+async def chat_completions(request: Request):
+    data = await request.json()
+    model = data.get("model")  # TODO
+    messages = data.get("messages")
+    text = ""
+
+    for msg in messages:
+        role = msg.get("role")
+        content = msg.get("content")
+        if role in ["system", "developer"]:
+            text += f"This is a system-specific response. {content} "
+        else:
+            text += f"{content} "
+
+    try:
+        response_text, current_url = scraper.search_chatgpt(
+            "https://chatgpt.com/c/678f8187-43dc-8012-abbd-eb2e37f3dfb5", text
+        )
+    except Exception as e:
+        response_text = f"Error during ChatGPT completions: {e}"
+        current_url = None
+
+    return Response(
+        response=response_text,
+        url=current_url,
+        details={"endpoint": "/v1/chat/completions", "status": "ok", "model": model},
+    ).model_dump_json()

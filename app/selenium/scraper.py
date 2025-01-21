@@ -39,20 +39,33 @@ class ChatGPTScraper:
     def search_chatgpt(self, url: str, query: str) -> List[str]:
         url = self.url if url is None else url
         results = None
+        wait = WebDriverWait(self.driver, 10)
         try:
             # if page not equal with current page, change page
             if self.driver.current_url != url:
                 self.driver.get(url)
 
-            search_box = WebDriverWait(self.driver, 10).until(
+            search_box = wait.until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "p.placeholder"))
             )
-
             search_box.click()
             search_box.send_keys(query)
-            search_box.send_keys(Keys.RETURN)
 
-            time.sleep(10)  # TODO: Replace with WebDriverWait
+            send_btn = wait.until(
+                EC.element_to_be_clickable(
+                    (
+                        By.CSS_SELECTOR,
+                        "button[data-testid='send-button']",
+                    )
+                )
+            )
+            send_btn.click()
+
+            wait.until(
+                EC.invisibility_of_element_located(
+                    (By.CSS_SELECTOR, "button[data-testid='stop-button']")
+                )
+            )
 
             responses = self.driver.find_elements(
                 By.CSS_SELECTOR,
@@ -78,4 +91,4 @@ if __name__ == "__main__":
     scraper = ChatGPTScraper(
         subprocess_path=CHROME_SUBPROCESS_PATH, subprocess_port=SUBPROCESS_PORT
     )
-    scraper.search_chatgpt("What is the capital of France?")
+    print(scraper.search_chatgpt(None, "What is the capital of France?"))
