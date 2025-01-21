@@ -61,9 +61,9 @@ async def chat_completions(request: Request):
         role = msg.get("role")
         content = msg.get("content")
         if role in ["system", "developer"]:
-            text += f"This is a system-specific response. {content} "
+            text += f"[SYSTEM] This is a system-specific response. {content} "
         else:
-            text += f"{content} "
+            text += f"[USER] {content} "
 
     try:
         url = scraper.url + f"?model={model}"
