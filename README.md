@@ -11,7 +11,7 @@
 - slack 봇 형태로 동작합니다.
 - 채널에 질문이 들어오면 해당 질문에 대한 쓰레드로 gpt가 생성한 답변을 반환합니다.
 - 해당 쓰레드에서 질문을 이어나갈 수 있습니다.
-- API 대신 구독중인 본인의 chatgpt 계정을 활용하고 있으므로 해당 프로젝트는 반드시 비금리적으로 사용해야 합니다.
+- API 대신 구독중인 본인의 chatgpt 계정을 활용하고 있으므로 해당 프로젝트는 반드시 **상업적 목적으로 사용해선 안됩니다**.
 - chatgpt [docs](https://platform.openai.com/docs/api-reference/chat/create)에 나와있는 것과 동일하게 `v1/chat/completions` endpoint를 본인의 것에 붙여 api를 사용할 수 있습니다. (분산처리 구현 X)
 
 ## Example
