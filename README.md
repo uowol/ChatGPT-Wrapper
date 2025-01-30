@@ -3,6 +3,11 @@
 - v1.1 : api, model-change
 - v1 : text-only, window-only, slack-bot, no-api, gpt-4o-only
 
+## TODO
+- [ ] git 설치
+- [ ] poetry 환경변수 추가하기
+- [ ] 
+
 ## Background
 - 업무나 업무 외적으로도 GPT를 사용하는 비중이 커졌으나, 따로 관리하는 방법이 없고 날짜별로 정리만 해주기 때문에 이전에 질문했던 내용을 찾기가 쉽지 않습니다.
 - 그러다 Slack이나 디스코드의 채널을 떠올렸는데, 관련 업무에 대한 질문을 해당 채널에서 관리할 수 있다면 조금 더 접근이 용이해지지 않을까 했습니다.
