@@ -6,7 +6,6 @@
 ## TODO
 - [ ] git 설치
 - [ ] poetry 환경변수 추가하기
-- [ ] 
 
 ## Background
 - 업무나 업무 외적으로도 GPT를 사용하는 비중이 커졌으나, 따로 관리하는 방법이 없고 날짜별로 정리만 해주기 때문에 이전에 질문했던 내용을 찾기가 쉽지 않습니다.
@@ -74,20 +73,8 @@
 
 #### Extra. API 사용하기
 ```
-curl https://{address}/v1/chat/completions \
--H "Content-Type: application/json" \
--d '{
-  "model": "gpt-4o",
-  "messages": [
-    {
-      "role": "system",
-      "content": "{system 프롬프트를 입력합니다.}"
-    },
-    {
-      "role": "user",
-      "content": "{질문을 구성합니다.}"
-    }
-  ]
-}'
+poetry install
+poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
+curl -X POST http://127.0.0.1:8000/v1/chat/completions -H "Content-Type: application/json" -d "{\"model\":\"gpt-4o\",\"messages\":[{\"role\":\"user\",\"content\":\"안녕 오늘의 뉴스를 요약해줘\"}]}"
 ```
 
